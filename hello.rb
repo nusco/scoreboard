@@ -2,8 +2,6 @@ require 'bundler/setup'
 require 'sinatra'
 require 'json'
 
-SCOREboard = {}
-
 configure do
   require 'redis'
   
@@ -34,9 +32,9 @@ end
 post '/score' do
 	team = params[:teamName]
 	score = params[:score]
-	scoreboard = JSON.parse(REDIS.get("scoreboard"))
-	SCOREboard[team]=score
-	REDIS.set("scoreboard",SCOREboard.to_json)
+	scoreboard = fetch_score_board
+	scoreboard[team]=score
+	save(scoreboard)
 	getMarkup()
 end
 
@@ -65,9 +63,20 @@ def getForm()
 end
 
 def getScore()
+	scoreboard = fetch_score_board
 	table = "<table>"
-	SCOREboard.each do |key,value|
+	scoreboard.each do |key,value|
 		table << "<tr><td>#{key}</td><td>#{value}</td></tr>"
 	end	
 	table << "</table>"
 end
+
+def fetch_score_board
+	redisData = REDIS.get("scoreboard")
+	return JSON.parse(redisData) if redisData
+	return {}
+end	
+
+def save(scoreboard)
+	REDIS.set("scoreboard",scoreboard.to_json)
+end	
