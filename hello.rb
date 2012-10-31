@@ -34,7 +34,10 @@ end
 post '/score' do
 	team = params[:teamName]
 	score = params[:score]
-	scoreboard = JSON.parse(REDIS.get("scoreboard"))
+	redisdata = REDIS.get("scoreboard")
+	if redisdata
+	  scoreboard = JSON.parse(redisdata)
+	end
 	SCOREboard[team]=score
 	REDIS.set("scoreboard",SCOREboard.to_json)
 	getMarkup()
