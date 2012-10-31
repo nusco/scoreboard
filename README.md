@@ -1,4 +1,4 @@
-scoreboard
+Scoreboard
 ==========
 
-A scoreboard for coding challenges
+A public scoreboard for coding challenges.

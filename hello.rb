@@ -1,16 +1,38 @@
 require 'bundler/setup'
 require 'sinatra'
+require 'json'
 
 SCOREboard = {}
+
+configure do
+  require 'redis'
+  uri = URI.parse(ENV["REDISTOGO_URL"])
+  REDIS = Redis.new(:host => uri.host, :port => uri.port, :password => uri.password)
+  begin
+      REDIS.get("key")
+  rescue
+    puts
+    puts "WARNING: Could not connect to redis - using an in-memory mock"
+    puts
+    require "mock_redis"
+    REDIS = MockRedis.new
+  end
+end
 
 get '/' do
   getMarkup
 end
 
+get 'score' do
+	getMarkup
+end
+
 post '/score' do
 	team = params[:teamName]
 	score = params[:score]
+	scoreboard = JSON.parse(REDIS.get("scoreboard"))
 	SCOREboard[team]=score
+	REDIS.set("scoreboard",SCOREboard.to_json)
 	getMarkup()
 end
 
