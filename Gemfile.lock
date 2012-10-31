@@ -21,6 +21,8 @@ GEM
     rack (1.4.1)
     rack-protection (1.2.0)
       rack
+    rack-test (0.6.2)
+      rack (>= 1.0)
     redis (3.0.2)
     rest-client (1.6.7)
       mime-types (>= 1.16)
@@ -47,6 +49,7 @@ DEPENDENCIES
   heroku
   json_pure
   mock_redis
+  rack-test
   redis
   rspec
   sinatra
