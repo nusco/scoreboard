@@ -12,6 +12,7 @@ GEM
       rubyzip
     heroku-api (0.3.5)
       excon (~> 0.16.1)
+    json_pure (1.7.5)
     launchy (2.1.2)
       addressable (~> 2.3)
     mime-types (1.19)
@@ -40,9 +41,11 @@ GEM
 
 PLATFORMS
   ruby
+  x86-mingw32
 
 DEPENDENCIES
   heroku
+  json_pure
   mock_redis
   redis
   rspec
