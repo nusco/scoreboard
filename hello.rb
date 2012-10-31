@@ -22,11 +22,11 @@ configure do
 end
 
 get '/' do
-  getMarkup
+  markup
 end
 
 get 'score' do
-	getMarkup
+	markup
 end
 
 post '/score' do
@@ -35,15 +35,14 @@ post '/score' do
 	scoreboard = fetch_score_board
 	scoreboard[team]=score
 	save(scoreboard)
-	getMarkup()
+	markup()
 end
 
-def getMarkup()
-	return getForm + getScore
+def markup()
+	return form + score
 end	
 
-def getForm()
-
+def form()
 	return '<html>
   	<head><title>Score board</title></head>
   	<body>
@@ -62,7 +61,7 @@ def getForm()
   	</html>'
 end
 
-def getScore()
+def score()
 	scoreboard = fetch_score_board
 	table = "<table>"
 	scoreboard.each do |key,value|
@@ -72,8 +71,8 @@ def getScore()
 end
 
 def fetch_score_board
-	redisData = REDIS.get("scoreboard")
-	return JSON.parse(redisData) if redisData
+	redis_data = REDIS.get("scoreboard")
+	return JSON.parse(redis_data) if redis_data
 	return {}
 end	
 
