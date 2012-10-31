@@ -1,0 +1,5 @@
+task :default => [:test]
+
+task :test do
+  ruby "./hello_world_test.rb"
+end
